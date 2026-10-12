@@ -33,3 +33,4 @@ Add a **Response** action to every flow, with header `Access-Control-Allow-Origi
 - **Password security is basic.** The browser sends a SHA-256 hash, which is better than plain text but not production-grade. For real accounts, use Microsoft Entra External ID or Auth0 instead of a Customers list.
 - **Flow URLs contain a secret key** and are visible in the site's source. Anyone can call them, so validate input in the flow and add rate limits or a CAPTCHA.
 - Prices are read from the Products list in the browser; recalculate the total in the `order` flow so it can't be tampered with.
+# StoreShoe
