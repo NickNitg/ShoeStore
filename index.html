@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stride — Shoes for every run, trail and game</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap">
+<style>
+:root{--bg:#f2f4f7;--ink:#101828;--mute:#667085;--line:#d9dee6;--card:#fff;--blue:#2f5bff;--lime:#d7ff3a}
+@media(prefers-color-scheme:dark){:root{--bg:#0d1117;--ink:#eef1f6;--mute:#98a2b3;--line:#263042;--card:#161c26}}
+*{box-sizing:border-box}
+body{margin:0;font-family:Archivo,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:center;padding:12px 24px;flex-wrap:wrap}
+.logo{font-stretch:62%;font-weight:900;font-size:34px;letter-spacing:-1px;margin-right:auto}
+.logo i{font-style:normal;background:var(--lime);color:#101828;padding:0 6px;margin-left:2px}
+.btn{border:2px solid var(--ink);background:none;padding:8px 16px;font-weight:700;border-radius:999px}
+.btn.pri{background:var(--ink);color:var(--bg)}
+.btn.blue{background:var(--blue);border-color:var(--blue);color:#fff}
+.hero{padding:40px 24px 16px;max-width:1200px;margin:auto}
+.hero h1{font-stretch:62%;font-weight:900;font-size:clamp(48px,11vw,128px);line-height:.86;letter-spacing:-2px;margin:0}
+.hero p{color:var(--mute);max-width:46ch;margin:16px 0 0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;max-width:1200px;margin:16px auto 0;padding:0 24px}
+.tabs .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;width:100%}
+.tabs b{font-size:13px;color:var(--mute);min-width:56px}
+.chip{border:1.5px solid var(--line);background:var(--card);padding:6px 14px;border-radius:999px;font-weight:600}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+main{display:grid;grid-template-columns:240px 1fr;gap:24px;max-width:1200px;margin:24px auto;padding:0 24px}
+@media(max-width:760px){main{grid-template-columns:1fr}}
+aside{display:flex;flex-direction:column;gap:20px;align-self:start}
+aside h3{margin:0 0 8px;font-size:14px}
+.sw{display:flex;gap:8px;flex-wrap:wrap}
+.dot{width:30px;height:30px;border-radius:50%;border:2px solid var(--line)}
+.dot[aria-pressed=true]{outline:3px solid var(--blue);outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.pic{aspect-ratio:4/3;display:grid;place-items:center;font-size:72px;border-radius:4px}
+.card h4{margin:0;font-size:17px}
+.meta{color:var(--mute);font-size:13px}
+.price{font-weight:800;font-size:20px}
+.buy{display:flex;gap:8px}
+.buy select{flex:1;border:1.5px solid var(--line);border-radius:6px;background:var(--bg);padding:6px}
+dialog{border:none;border-radius:10px;background:var(--card);color:var(--ink);padding:24px;width:min(460px,94vw)}
+dialog::backdrop{background:#000a}
+dialog h2{margin:0 0 12px;font-stretch:75%;font-weight:900;font-size:30px}
+label{display:block;font-size:13px;font-weight:600;margin:10px 0 4px}
+input[type=text],input[type=email],input[type=password]{width:100%;padding:10px;border:1.5px solid var(--line);border-radius:6px;background:var(--bg)}
+.line{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center}
+.msg{color:var(--mute);font-size:13px;margin-top:8px}
+.err{color:#d92d20}
+.badge{background:var(--lime);color:#101828;border-radius:999px;padding:0 8px;margin-left:6px;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">STRIDE<i>.</i></div>
+  <span id="who" class="meta"></span>
+  <button class="btn" id="acctBtn">Sign in</button>
+  <button class="btn pri" id="cartBtn">Cart<span class="badge" id="count">0</span></button>
+</header>
+
+<section class="hero">
+  <h1>Run it.<br>Hike it.<br>Play it.</h1>
+  <p>Pick a category or a sport, then narrow by color, size and price.</p>
+</section>
+
+<nav class="tabs" aria-label="Shop by">
+  <div class="row"><b>Category</b><span id="cats"></span></div>
+  <div class="row"><b>Sport</b><span id="sports"></span></div>
+</nav>
+
+<main>
+  <aside aria-label="Filters">
+    <div><h3>Color</h3><div class="sw" id="colors"></div></div>
+    <div><h3>Size (US)</h3><div class="sw" id="sizes"></div></div>
+    <div><h3>Max price: $<span id="pv"></span></h3><input type="range" id="price" min="40" max="250" step="5" value="250" style="width:100%"></div>
+    <button class="btn" id="reset">Clear filters</button>
+  </aside>
+  <section><p class="meta" id="result"></p><div class="grid" id="grid"></div></section>
+</main>
+
+<dialog id="cartD"><h2>Your cart</h2><div id="cartList"></div><p class="price" id="total"></p>
+  <div class="buy"><button class="btn" onclick="cartD.close()">Keep shopping</button><button class="btn blue" id="toCheckout">Checkout</button></div></dialog>
+
+<dialog id="authD"><h2 id="authT">Sign in</h2>
+  <div id="nameWrap" hidden><label for="aName">Full name</label><input type="text" id="aName"></div>
+  <label for="aEmail">Email</label><input type="email" id="aEmail">
+  <label for="aPass">Password</label><input type="password" id="aPass">
+  <p class="msg err" id="authErr"></p>
+  <div class="buy"><button class="btn blue" id="authGo">Sign in</button><button class="btn" id="authSwap">Create account</button><button class="btn" onclick="authD.close()">Cancel</button></div></dialog>
+
+<dialog id="coD"><h2>Checkout</h2>
+  <p class="msg" id="coWho"></p>
+  <label for="cName">Full name</label><input type="text" id="cName">
+  <label for="cEmail">Email</label><input type="email" id="cEmail">
+  <label for="cAddr">Street address</label><input type="text" id="cAddr">
+  <label for="cCity">City, ZIP</label><input type="text" id="cCity">
+  <p class="price" id="coTotal"></p><p class="msg err" id="coErr"></p>
+  <div class="buy"><button class="btn blue" id="placeBtn">Place order</button><button class="btn" onclick="coD.close()">Back</button></div></dialog>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
